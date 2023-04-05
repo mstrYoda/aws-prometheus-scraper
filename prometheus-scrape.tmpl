@@ -1,0 +1,17 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'prometheusjob'
+
+scrape_configs:
+{{- range .jobs }}
+  - job_name: {{.Name}}
+    scrape_interval: 5s
+    static_configs:
+    {{- range .Tasks }}
+      - targets:
+          - {{.IPAddr}}
+        labels:
+          version: {{.TaskARNVersion}}
+    {{- end}}
+{{- end}}
